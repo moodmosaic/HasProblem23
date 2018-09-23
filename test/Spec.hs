@@ -7,6 +7,7 @@ import           Control.Monad  (unless)
 import           Data.List      (genericLength)
 import           Hedgehog
 import qualified Hedgehog.Gen   as Gen
+import qualified Hedgehog.Gen.QuickCheck as Gen
 import qualified Hedgehog.Range as Range
 import           Lib
 import           System.Exit    (exitFailure)
@@ -38,11 +39,11 @@ properties :: IO Bool
 properties =
   checkParallel $ Group "Properties" [
         ("rndGenSelect returns result of correct length"
-        , lenProp (Gen.int $ Range.linear (-100) 100))
+        , lenProp (Gen.arbitrary :: Gen Int))
       , ("rndGenSelect returns result of correct length"
-        , lenProp Gen.alpha)
+        , lenProp (Gen.arbitrary :: Gen Char))
       , ("rndGenSelect returns empty result when count is negative"
-        , negLenProp (Gen.int $ Range.linear (-100) 100))
+        , negLenProp (Gen.arbitrary :: Gen Int))
     ]
 
 regressionTests :: IO Bool
